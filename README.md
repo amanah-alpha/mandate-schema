@@ -4,6 +4,8 @@
 
 Public interoperability specification · JSON Schema Draft 2020-12
 
+[![CI](https://github.com/amanah-alpha/mandate-schema/actions/workflows/ci.yml/badge.svg)](https://github.com/amanah-alpha/mandate-schema/actions/workflows/ci.yml)
+
 This project does not define a universal policy language or executable compliance engine. It models governance metadata around human-approved mandates and their referenced controls.
 
 ## 1. Purpose
