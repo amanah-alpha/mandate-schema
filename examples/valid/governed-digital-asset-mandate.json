@@ -1,0 +1,53 @@
+{
+  "mandate_id": "mandate:synthetic:non-authoritative:digital-assets:001",
+  "version": "1.0.0",
+  "status": "APPROVED",
+  "authority": {
+    "authority_id": "authority:synthetic:digital-assets:001",
+    "authority_type": "INTERNAL_GOVERNANCE_BODY",
+    "display_name": "Synthetic Digital Asset Governance Committee",
+    "jurisdiction_reference": "jurisdiction:synthetic:non-authoritative"
+  },
+  "effective_from": "2026-08-01T00:00:00Z",
+  "provenance": {
+    "document_id": "document:synthetic:non-authoritative:digital-asset-mandate",
+    "document_version": "1.0",
+    "clause_reference": "governance-schedule-a",
+    "content_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "approval": {
+    "approval_id": "approval:synthetic:digital-assets:001",
+    "approved_at": "2026-07-20T12:00:00Z",
+    "reviewer_refs": [
+      "reviewer:opaque:digital-assets:001",
+      "reviewer:opaque:digital-assets:002"
+    ],
+    "approval_reference": "record:synthetic:non-authoritative:approval:001"
+  },
+  "controls": [
+    {
+      "control_id": "control:synthetic:allowed-assets",
+      "source_clause": "schedule-a.1",
+      "rule_reference": "rule-ref:synthetic:allowed-assets:v1",
+      "status": "ACTIVE"
+    },
+    {
+      "control_id": "control:synthetic:leverage-limit",
+      "source_clause": "schedule-a.2",
+      "rule_reference": "rule-ref:synthetic:leverage-limit:v1",
+      "status": "ACTIVE"
+    },
+    {
+      "control_id": "control:synthetic:prohibited-lending",
+      "source_clause": "schedule-a.3",
+      "rule_reference": "rule-ref:synthetic:prohibited-lending:v1",
+      "status": "ACTIVE"
+    },
+    {
+      "control_id": "control:synthetic:venue-restrictions",
+      "source_clause": "schedule-a.4",
+      "rule_reference": "rule-ref:synthetic:venue-restrictions:v1",
+      "status": "ACTIVE"
+    }
+  ]
+}

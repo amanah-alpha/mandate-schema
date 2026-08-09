@@ -1,0 +1,50 @@
+{
+  "schema": "../schema/mandate.schema.json",
+  "cases": [
+    {
+      "fixture": "../examples/valid/minimal.json",
+      "expected": "valid",
+      "intended_invariant": "A minimal mandate containing every required governance section is valid."
+    },
+    {
+      "fixture": "../examples/valid/versioned-mandate.json",
+      "expected": "valid",
+      "intended_invariant": "A mandate can reference the prior mandate version that it supersedes."
+    },
+    {
+      "fixture": "../examples/valid/governed-digital-asset-mandate.json",
+      "expected": "valid",
+      "intended_invariant": "Synthetic governance metadata can link digital-asset controls without embedding executable rules."
+    },
+    {
+      "fixture": "../examples/invalid/missing-authority.json",
+      "expected": "invalid",
+      "intended_invariant": "authority is required.",
+      "expected_error": "schema.required.authority"
+    },
+    {
+      "fixture": "../examples/invalid/missing-version.json",
+      "expected": "invalid",
+      "intended_invariant": "version is required.",
+      "expected_error": "schema.required.version"
+    },
+    {
+      "fixture": "../examples/invalid/invalid-effective-window.json",
+      "expected": "invalid",
+      "intended_invariant": "effective_until must not precede effective_from.",
+      "expected_error": "semantic.effective_window"
+    },
+    {
+      "fixture": "../examples/invalid/invalid-status.json",
+      "expected": "invalid",
+      "intended_invariant": "status must be one of the defined lifecycle values.",
+      "expected_error": "schema.enum.status"
+    },
+    {
+      "fixture": "../examples/invalid/missing-control-reference.json",
+      "expected": "invalid",
+      "intended_invariant": "Every control linkage requires a rule_reference identifier.",
+      "expected_error": "schema.required.rule_reference"
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mandate-schema:schema:mandate:0.1.0",
+  "title": "Operational Mandate Governance Metadata",
+  "description": "Governance provenance and lifecycle metadata for a human-approved operational mandate.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "mandate_id",
+    "version",
+    "status",
+    "authority",
+    "effective_from",
+    "provenance",
+    "approval",
+    "controls"
+  ],
+  "properties": {
+    "mandate_id": {
+      "$ref": "#/$defs/stableIdentifier"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+      "description": "Version of this governed mandate instance in MAJOR.MINOR.PATCH form."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "APPROVED",
+        "SUPERSEDED",
+        "WITHDRAWN"
+      ]
+    },
+    "authority": {
+      "$ref": "#/$defs/authority"
+    },
+    "effective_from": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "effective_until": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "supersedes": {
+      "$ref": "#/$defs/mandateReference"
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "approval": {
+      "$ref": "#/$defs/approval"
+    },
+    "controls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/controlReference"
+      }
+    }
+  },
+  "$defs": {
+    "stableIdentifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_id",
+        "authority_type",
+        "display_name"
+      ],
+      "properties": {
+        "authority_id": {
+          "$ref": "#/$defs/stableIdentifier"
+        },
+        "authority_type": {
+          "type": "string",
+          "enum": [
+            "INTERNAL_GOVERNANCE_BODY",
+            "EXTERNAL_AUTHORITY",
+            "DELEGATED_COMMITTEE",
+            "OTHER"
+          ]
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "jurisdiction_reference": {
+          "$ref": "#/$defs/stableIdentifier"
+        }
+      }
+    },
+    "mandateReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mandate_id",
+        "version"
+      ],
+      "properties": {
+        "mandate_id": {
+          "$ref": "#/$defs/stableIdentifier"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document_id",
+        "document_version",
+        "clause_reference",
+        "content_digest"
+      ],
+      "properties": {
+        "document_id": {
+          "$ref": "#/$defs/stableIdentifier"
+        },
+        "document_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "clause_reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "content_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approval_id",
+        "approved_at",
+        "reviewer_refs",
+        "approval_reference"
+      ],
+      "properties": {
+        "approval_id": {
+          "$ref": "#/$defs/stableIdentifier"
+        },
+        "approved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reviewer_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableIdentifier"
+          }
+        },
+        "approval_reference": {
+          "$ref": "#/$defs/stableIdentifier"
+        }
+      }
+    },
+    "controlReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "control_id",
+        "source_clause",
+        "rule_reference",
+        "status"
+      ],
+      "properties": {
+        "control_id": {
+          "$ref": "#/$defs/stableIdentifier"
+        },
+        "source_clause": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "rule_reference": {
+          "$ref": "#/$defs/stableIdentifier"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE"
+          ]
+        }
+      }
+    }
+  }
+}

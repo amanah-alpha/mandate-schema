@@ -1,0 +1,40 @@
+{
+  "mandate_id": "mandate:synthetic:treasury:001",
+  "version": "2.0.0",
+  "status": "APPROVED",
+  "authority": {
+    "authority_id": "authority:synthetic:treasury:001",
+    "authority_type": "DELEGATED_COMMITTEE",
+    "display_name": "Synthetic Treasury Governance Committee",
+    "jurisdiction_reference": "jurisdiction:synthetic:internal"
+  },
+  "effective_from": "2026-07-01T00:00:00Z",
+  "effective_until": null,
+  "supersedes": {
+    "mandate_id": "mandate:synthetic:treasury:001",
+    "version": "1.2.0"
+  },
+  "provenance": {
+    "document_id": "document:synthetic:treasury-mandate",
+    "document_version": "2.0",
+    "clause_reference": "part-2",
+    "content_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "approval": {
+    "approval_id": "approval:synthetic:treasury:002",
+    "approved_at": "2026-06-20T09:00:00Z",
+    "reviewer_refs": [
+      "reviewer:opaque:101",
+      "reviewer:opaque:102"
+    ],
+    "approval_reference": "record:synthetic:treasury:002"
+  },
+  "controls": [
+    {
+      "control_id": "control:synthetic:treasury:limit",
+      "source_clause": "part-2.1",
+      "rule_reference": "rule-ref:synthetic:treasury:limit:v2",
+      "status": "ACTIVE"
+    }
+  ]
+}

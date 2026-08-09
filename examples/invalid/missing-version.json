@@ -1,0 +1,32 @@
+{
+  "mandate_id": "mandate:synthetic:invalid:missing-version",
+  "status": "APPROVED",
+  "authority": {
+    "authority_id": "authority:synthetic:invalid:001",
+    "authority_type": "OTHER",
+    "display_name": "Synthetic Fixture Authority"
+  },
+  "effective_from": "2026-01-01T00:00:00Z",
+  "provenance": {
+    "document_id": "document:synthetic:invalid-fixture",
+    "document_version": "1.0",
+    "clause_reference": "section-1",
+    "content_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  },
+  "approval": {
+    "approval_id": "approval:synthetic:invalid:002",
+    "approved_at": "2025-12-01T00:00:00Z",
+    "reviewer_refs": [
+      "reviewer:opaque:invalid:002"
+    ],
+    "approval_reference": "record:synthetic:invalid:002"
+  },
+  "controls": [
+    {
+      "control_id": "control:synthetic:invalid:002",
+      "source_clause": "section-1",
+      "rule_reference": "rule-ref:synthetic:invalid:002",
+      "status": "ACTIVE"
+    }
+  ]
+}

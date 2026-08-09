@@ -1,0 +1,33 @@
+{
+  "mandate_id": "mandate:synthetic:operations:001",
+  "version": "1.0.0",
+  "status": "APPROVED",
+  "authority": {
+    "authority_id": "authority:synthetic:governance:001",
+    "authority_type": "INTERNAL_GOVERNANCE_BODY",
+    "display_name": "Synthetic Operations Governance Committee"
+  },
+  "effective_from": "2026-01-01T00:00:00Z",
+  "provenance": {
+    "document_id": "document:synthetic:operations-manual",
+    "document_version": "1.0",
+    "clause_reference": "section-4.1",
+    "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "approval": {
+    "approval_id": "approval:synthetic:001",
+    "approved_at": "2025-12-15T10:30:00Z",
+    "reviewer_refs": [
+      "reviewer:opaque:001"
+    ],
+    "approval_reference": "record:synthetic:approval:001"
+  },
+  "controls": [
+    {
+      "control_id": "control:synthetic:operations:001",
+      "source_clause": "section-4.1",
+      "rule_reference": "rule-ref:synthetic:operations:001",
+      "status": "ACTIVE"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "mandate_id": "mandate:synthetic:invalid:missing-authority",
+  "version": "1.0.0",
+  "status": "APPROVED",
+  "effective_from": "2026-01-01T00:00:00Z",
+  "provenance": {
+    "document_id": "document:synthetic:invalid-fixture",
+    "document_version": "1.0",
+    "clause_reference": "section-1",
+    "content_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  },
+  "approval": {
+    "approval_id": "approval:synthetic:invalid:001",
+    "approved_at": "2025-12-01T00:00:00Z",
+    "reviewer_refs": [
+      "reviewer:opaque:invalid:001"
+    ],
+    "approval_reference": "record:synthetic:invalid:001"
+  },
+  "controls": [
+    {
+      "control_id": "control:synthetic:invalid:001",
+      "source_clause": "section-1",
+      "rule_reference": "rule-ref:synthetic:invalid:001",
+      "status": "ACTIVE"
+    }
+  ]
+}
