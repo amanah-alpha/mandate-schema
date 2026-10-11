@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mandate-schema:experimental:mandate-extensions:0.1.0-rd",
+  "title": "EXPERIMENTAL Mandate Extensions (R&D — composable, not the stable contract)",
+  "description": "NON-AUTHORITATIVE SYNTHETIC REFERENCE EXTENSION. Composable, opt-in mandate fields for the QFC alignment campaign. assetClassScope restricts a governed pack to declared asset classes (permitted-token RWA, tokenized fund units, sukuk certificates for the Qatar context); excluded-token classes are scoping metadata mirroring the QFC Excluded-Token concept, not a legal determination. See docs/ASSET_CLASS_SCOPE.md in the amanah-alpha repository.",
+  "$defs": {
+    "assetClass": {
+      "enum": [
+        "PERMITTED_TOKEN_RWA",
+        "TOKENIZED_FUND_UNIT",
+        "SUKUK_CERTIFICATE",
+        "CONVENTIONAL_SECURITY",
+        "EXCLUDED_TOKEN_CRYPTO",
+        "EXCLUDED_TOKEN_STABLECOIN",
+        "EXCLUDED_TOKEN_CBDC",
+        "UNCLASSIFIED"
+      ]
+    },
+    "assetClassScope": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "uniqueItems": true,
+            "items": {
+        "enum": [
+          "PERMITTED_TOKEN_RWA",
+          "TOKENIZED_FUND_UNIT",
+          "SUKUK_CERTIFICATE",
+          "CONVENTIONAL_SECURITY",
+          "EXCLUDED_TOKEN_CRYPTO",
+          "EXCLUDED_TOKEN_STABLECOIN",
+          "EXCLUDED_TOKEN_CBDC",
+          "UNCLASSIFIED"
+        ]
+      },
+      "description": "When present, the runtime refuses to evaluate events whose declared asset class is outside this scope."
+    },
+    "assetClassScopeExtension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["asset_class_scope"],
+      "properties": {
+              "asset_class_scope": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 16,
+        "uniqueItems": true,
+        "items": {
+          "enum": [
+            "PERMITTED_TOKEN_RWA",
+            "TOKENIZED_FUND_UNIT",
+            "SUKUK_CERTIFICATE",
+            "CONVENTIONAL_SECURITY",
+            "EXCLUDED_TOKEN_CRYPTO",
+            "EXCLUDED_TOKEN_STABLECOIN",
+            "EXCLUDED_TOKEN_CBDC",
+            "UNCLASSIFIED"
+          ]
+        }
+      }
+      }
+    },
+    "extendedControlEnforcement": {
+      "enum": ["ADVISORY", "REVIEW", "DENY"],
+      "description": "Governed extended-control enforcement policy (PDR-0001): findings recorded (ADVISORY), escalated for human review (REVIEW), or stage-refusing (DENY)."
+    },
+    "extendedControlsExtension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["extended_controls_enabled"],
+      "properties": {
+        "extended_controls_enabled": {"type": "boolean"},
+        "extended_enforcement": {"enum": ["ADVISORY", "REVIEW", "DENY"]}
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["extended_enforcement"],
+            "properties": {
+              "extended_enforcement": {"enum": ["ADVISORY", "REVIEW", "DENY"]}
+            }
+          },
+          "then": {"properties": {"extended_controls_enabled": {"const": true}}}
+        }
+      ]
+    }
+  }
+}
