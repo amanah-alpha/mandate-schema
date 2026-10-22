@@ -5,13 +5,10 @@ from __future__ import annotations
 
 import json
 import sys
-from dataclasses import dataclass
-from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Sequence
+from typing import Any, Dict, List, Sequence
 
-from jsonschema import Draft202012Validator, FormatChecker
-from jsonschema.exceptions import ValidationError
+from jsonschema import Draft202012Validator
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,106 +16,13 @@ SCHEMA_PATH = ROOT / "schema" / "mandate.schema.json"
 MANIFEST_PATH = ROOT / "conformance" / "manifest.json"
 
 
-@dataclass(frozen=True)
-class Diagnostic:
-    """A stable code paired with a human-readable validation message."""
+sys.path.insert(0, str(ROOT))
 
-    code: str
-    message: str
-
-
-def load_json(path: Path) -> Any:
-    """Load strict JSON and add the path to parse errors."""
-
-    try:
-        with path.open("r", encoding="utf-8") as handle:
-            return json.load(handle)
-    except (OSError, json.JSONDecodeError) as error:
-        raise ValueError(f"{path}: {error}") from error
-
-
-def load_schema() -> Dict[str, Any]:
-    schema = load_json(SCHEMA_PATH)
-    Draft202012Validator.check_schema(schema)
-    return schema
-
-
-def build_validator(schema: Dict[str, Any] | None = None) -> Draft202012Validator:
-    canonical_schema = schema if schema is not None else load_schema()
-    return Draft202012Validator(
-        canonical_schema,
-        format_checker=FormatChecker(),
-    )
-
-
-def _json_pointer(parts: Iterable[Any]) -> str:
-    escaped = [str(part).replace("~", "~0").replace("/", "~1") for part in parts]
-    return "/" + "/".join(escaped) if escaped else ""
-
-
-def _schema_error_code(error: ValidationError) -> str:
-    path = list(error.absolute_path)
-
-    if error.validator == "required" and isinstance(error.instance, dict):
-        missing = [name for name in error.validator_value if name not in error.instance]
-        if len(missing) == 1:
-            return f"schema.required.{missing[0]}"
-
-    field = str(path[-1]) if path else "root"
-    return f"schema.{error.validator}.{field}"
-
-
-def schema_diagnostics(
-    instance: Dict[str, Any],
-    validator: Draft202012Validator | None = None,
-) -> List[Diagnostic]:
-    active_validator = validator if validator is not None else build_validator()
-    errors = sorted(
-        active_validator.iter_errors(instance),
-        key=lambda error: (list(error.absolute_path), str(error.validator), error.message),
-    )
-    return [
-        Diagnostic(
-            code=_schema_error_code(error),
-            message=f"{_json_pointer(error.absolute_path) or '/'}: {error.message}",
-        )
-        for error in errors
-    ]
-
-
-def _parse_rfc3339(value: str) -> datetime:
-    normalized = value[:-1] + "+00:00" if value.endswith("Z") else value
-    return datetime.fromisoformat(normalized)
-
-
-def semantic_diagnostics(instance: Dict[str, Any]) -> List[Diagnostic]:
-    """Apply documented cross-field checks that JSON Schema does not express."""
-
-    effective_from = instance.get("effective_from")
-    effective_until = instance.get("effective_until")
-    if isinstance(effective_from, str) and isinstance(effective_until, str):
-        try:
-            if _parse_rfc3339(effective_until) < _parse_rfc3339(effective_from):
-                return [
-                    Diagnostic(
-                        code="semantic.effective_window",
-                        message="/effective_until: must not precede /effective_from",
-                    )
-                ]
-        except ValueError:
-            # Draft 2020-12 format validation reports malformed date-time values.
-            pass
-    return []
-
-
-def diagnostics(
-    instance: Dict[str, Any],
-    validator: Draft202012Validator | None = None,
-) -> List[Diagnostic]:
-    structural = schema_diagnostics(instance, validator)
-    if structural:
-        return structural
-    return semantic_diagnostics(instance)
+from mandate_schema._json import load_json_value as load_json  # noqa: E402
+from mandate_schema.validation import (  # noqa: E402
+    Diagnostic, build_validator, diagnostics, load_schema,
+    schema_diagnostics, semantic_diagnostics,
+)
 
 
 def load_manifest() -> Dict[str, Any]:
@@ -149,10 +53,17 @@ def _assert_manifest_coverage(cases: Sequence[Dict[str, Any]]) -> None:
         raise ValueError("manifest contains duplicate fixture paths")
 
 
+def repository_json_paths(root: Path) -> List[Path]:
+    ignored = {".git", ".venv", "build", "dist", ".pytest_cache", "__pycache__"}
+    return sorted(path for path in root.rglob("*.json")
+                  if not any(part in ignored or part.endswith(".egg-info")
+                             for part in path.relative_to(root).parts))
+
+
 def validate_repository() -> List[str]:
     """Validate all JSON, the canonical schema, and every conformance case."""
 
-    json_paths = sorted(ROOT.rglob("*.json"))
+    json_paths = repository_json_paths(ROOT)
     for path in json_paths:
         load_json(path)
 

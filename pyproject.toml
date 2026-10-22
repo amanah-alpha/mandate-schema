@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mandate-schema"
+version = "0.1.0"
+description = "Independent local validation tools for the mandate-schema interoperability specification"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "Apache-2.0"}
+dependencies = ["jsonschema>=4.23,<5", "rfc3339-validator>=0.1.4,<0.2"]
+
+[project.urls]
+Repository = "https://github.com/amanah-alpha/mandate-schema"
+Issues = "https://github.com/amanah-alpha/mandate-schema/issues"
+
+[project.scripts]
+mandate-schema = "mandate_schema.cli:main"
+
+[tool.setuptools]
+packages = ["mandate_schema", "mandate_schema.schemas"]
+package-dir = {"mandate_schema.schemas" = "schema"}
+
+[tool.setuptools.package-data]
+"mandate_schema.schemas" = ["*.json"]

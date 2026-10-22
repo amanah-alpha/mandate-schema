@@ -40,6 +40,15 @@ jobs:
       - name: Run unit tests
         run: python -m unittest discover -s tests -v
 
+
+      - name: Verify wheel in an isolated consumer environment
+        run: |
+          python -m pip wheel --no-deps --wheel-dir "${RUNNER_TEMP}/schema-wheels" .
+          python -m venv "${RUNNER_TEMP}/schema-consumer"
+          "${RUNNER_TEMP}/schema-consumer/bin/python" -m pip install "${RUNNER_TEMP}/schema-wheels/"*.whl
+          cd "${RUNNER_TEMP}"
+          "${RUNNER_TEMP}/schema-consumer/bin/python" "${GITHUB_WORKSPACE}/scripts/verify_installed_package.py"
+
       - name: Write job summary
         run: |
           printf '%s\n' \
